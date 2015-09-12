@@ -1,0 +1,31 @@
+{
+  "name": "babel-plugin-jss-autoprefix",
+  "version": "0.1.0",
+  "description": "Babel plugin to autoprefix jss",
+  "main": "lib/index.js",
+  "author": "Art Semyonov <art@schthngs.com>",
+  "license": "MIT",
+  "repository": "arsemyonov/babel-jss-autoprefix",
+  "scripts": {
+    "build": "babel-plugin build",
+    "test": "mocha --compilers js:babel/register",
+    "test:watch": "npm run test -- --watch",
+    "prepublish": "npm run build"
+  },
+  "keywords": [
+    "babel-plugin"
+  ],
+  "bugs": {
+    "url": "https://github.com/arsemyonov/babel-jss-autoprefix/issues"
+  },
+  "homepage": "https://github.com/arsemyonov/babel-jss-autoprefix#readme",
+  "dependencies": {
+    "autoprefixer": "^6.0.2",
+    "caniuse-db": "^1.0.30000304",
+    "react": "^0.13.3"
+  },
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "mocha": "^2.3.2"
+  }
+}

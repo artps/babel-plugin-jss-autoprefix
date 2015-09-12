@@ -21,7 +21,7 @@
   "homepage": "https://github.com/arsemyonov/babel-jss-autoprefix#readme",
   "dependencies": {
     "autoprefixer": "^6.0.2",
-    "caniuse-db": "^1.0.30000304",
+    "postcss": "^5.0.5",
     "react": "^0.13.3"
   },
   "devDependencies": {

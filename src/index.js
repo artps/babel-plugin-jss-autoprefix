@@ -1,62 +1,70 @@
-import Browsers from 'autoprefixer/lib/browsers';
-import Prefixes from 'autoprefixer/lib/prefixes';
-import PrefixesData from 'autoprefixer/data/prefixes';
+import postcss from 'postcss';
+import autoprefixer from 'autoprefixer';
 
 import hyphenateStyleName from 'react/lib/hyphenateStyleName';
 import camelizeStyleName from 'react/lib/camelizeStyleName';
 
-import { agents } from 'caniuse-db/data';
-
-const options = { browsers: 'last 2 versions' };
-
-const browsers = new Browsers(agents, options.browsers, {});
-const prefixes = new Prefixes(PrefixesData, browsers, options);
-
 
 export default function ({Plugin, types: t}) {
-  function isProperty(prop) {
-    return prop.type === 'Property';
+  const processor = postcss([
+    autoprefixer({ browsers: 'last 4 versions' })
+  ])
+
+  function isProperty({ type }) {
+    return type === 'Property';
   }
 
-  function cloneWithName(prop, nextName) {
-    return t.property(
-      'init',
-      t.identifier(nextName),
-      t.literal(prop.value.value)
+  function isSpreadProperty({ type, argument }) {
+    return (
+      type === 'SpreadProperty' &&
+      argument.type === 'ObjectExpression'
     );
   }
 
-  function addPrefix(prop) {
-    const hyphenatedName = hyphenateStyleName(prop.key.name);
-    return (
-      prefixes.add[hyphenatedName] || { prefixes: [] }
-    ).prefixes
-     .map((key) => camelizeStyleName(key + hyphenatedName))
-     .filter((key) => !!key)
-     .map((key) => cloneWithName(prop, key))
+  function isTarget(node) {
+    return node.callee.name === 'autoprefix';
+  }
+
+  function propToDecl({ key, value }) {
+    return postcss.decl({
+      prop: hyphenateStyleName(key.name),
+      value: value.value
+    });
+  }
+
+  function declToProp(decl) {
+    return t.property(
+      'init',
+      t.identifier(camelizeStyleName(decl.prop)),
+      t.literal(decl.value)
+    );
   }
 
   function process(props) {
-    return props.reduce((acc, prop) => {
-      acc.push(prop);
-      if(isProperty(prop)) {
-        acc.push(...addPrefix(prop));
-      }
-      return acc;
-    }, []);
+    return props
+      .map((prop) => {
+        if(isProperty(prop)) {
+          return processor.process(propToDecl(prop)).sync().root.nodes.map(declToProp);
+        }
+
+        if(isSpreadProperty(prop)) {
+          return process(prop.argument.properties);
+        }
+
+        return prop;
+      })
+      .reduce((acc, props) => (acc.concat(props)), []);
   }
 
   return new Plugin('jss-autoprefix', {
     visitor: {
       CallExpression: {
         exit(node) {
-          if(node.callee.name !== 'autoprefix') {
+          if(!isTarget(node)) {
             return;
           }
 
-          var obj = node.arguments[0];
-
-          return t.objectExpression(process(obj.properties));
+          return t.objectExpression(process(node.arguments[0].properties));
         }
       }
     }

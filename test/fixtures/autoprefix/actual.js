@@ -1,14 +1,13 @@
 const style = autoprefix({
-  fontSize: 14,
-  borderWidth: 1,
+  fontSize: '14px',
+  borderWidth: '1px',
   userSelect: 'none'
 });
 const activeStyle = autoprefix({
   ...style,
-  ...{ background: '' }
+  ...{
+    background: '#000'
+  }
 });
 
-<button style={[foo, autoprefix({
-  ...style,
-  ...{ background: '' }
-})]}>Button</button>;
+<button style={[foo, autoprefix({ background: '' })]}>Button</button>;

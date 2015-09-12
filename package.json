@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-jss-autoprefix",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Babel plugin to autoprefix jss",
   "main": "lib/index.js",
   "author": "Art Semyonov <art@schthngs.com>",

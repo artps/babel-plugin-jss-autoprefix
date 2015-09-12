@@ -13,40 +13,50 @@ const browsers = new Browsers(agents, options.browsers, {});
 const prefixes = new Prefixes(PrefixesData, browsers, options);
 
 
-function process(key) {
-  const newKey = hyphenateStyleName(key);
-  const foo = prefixes.add[newKey] || { prefixes: []};
-
-  return foo.prefixes.map((prefixKey) => (
-    camelizeStyleName(prefixKey + newKey)
-  )).filter((key) => !!key);
-}
-
 export default function ({Plugin, types: t}) {
+  function isProperty(prop) {
+    return prop.type === 'Property';
+  }
+
+  function cloneWithName(prop, nextName) {
+    return t.property(
+      'init',
+      t.identifier(nextName),
+      t.literal(prop.value.value)
+    );
+  }
+
+  function addPrefix(prop) {
+    const hyphenatedName = hyphenateStyleName(prop.key.name);
+    return (
+      prefixes.add[hyphenatedName] || { prefixes: [] }
+    ).prefixes
+     .map((key) => camelizeStyleName(key + hyphenatedName))
+     .filter((key) => !!key)
+     .map((key) => cloneWithName(prop, key))
+  }
+
+  function process(props) {
+    return props.reduce((acc, prop) => {
+      acc.push(prop);
+      if(isProperty(prop)) {
+        acc.push(...addPrefix(prop));
+      }
+      return acc;
+    }, []);
+  }
+
   return new Plugin('jss-autoprefix', {
     visitor: {
       CallExpression: {
-        exit(node, parent, scope) {
+        exit(node) {
           if(node.callee.name !== 'autoprefix') {
             return;
           }
 
           var obj = node.arguments[0];
-          var props = obj.properties;
 
-          props.forEach((prop) => {
-            if(prop.type === 'Property') {
-              process(prop.key.name).forEach((newName) => {
-                props.push(t.property(
-                  'init',
-                  t.identifier(newName),
-                  t.literal(prop.value.value)
-                ));
-              });
-            }
-          });
-
-          return t.objectExpression(props);
+          return t.objectExpression(process(obj.properties));
         }
       }
     }

@@ -20,7 +20,7 @@ function caseReader(fixtureDirName) {
     },
 
     expected() {
-      return fs.readFileSync(expectedPath).toString().trim()
+      return fs.readFileSync(expectedPath).toString().trim();
     }
   }
 }
@@ -30,7 +30,7 @@ describe('finds and process `autoprefix` call', () => {
     it(`should ${name}`, () => {
       const read = caseReader(name);
 
-      assert.equal(read.actual(), read.expected())
+      assert.equal(read.actual(), read.expected());
     });
   });
 })

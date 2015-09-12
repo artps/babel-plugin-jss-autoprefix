@@ -56,6 +56,19 @@ Add to your `.babelrc`:
 }
 ```
 
+## TODO
+
+Handle:
+
+```javascript
+{
+  display: '-webkit-box',
+  display: '-webkit-flex',
+  display: '-ms-flexbox',
+  display: 'flex'
+};
+```
+
 ## License
 
 MIT

@@ -1,6 +1,6 @@
 # babel-plugin-jss-autoprefix
 
-The Babel plugin as a layer on top of postcss and autoprefixer that adds vendor prefixes to your jsx inline styles.
+The Babel plugin as a layer on top of [postcss](https://github.com/postcss/postcss) and [autoprefixer](https://github.com/postcss/autoprefixer) that adds vendor prefixes to your jsx inline styles.
 
 ## Example
 

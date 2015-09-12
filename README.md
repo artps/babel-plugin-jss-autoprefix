@@ -1,8 +1,6 @@
-# Proof of concept. WIP
+# babel-plugin-jss-autoprefix
 
-## babel-plugin-jss-autoprefix
-
-Babel plugin to add vendor prefixes to your jsx inline styles. Uses `autoprefixer`.
+The Babel plugin as a layer on top of postcss and autoprefixer that adds vendor prefixes to your jsx inline styles.
 
 ## Example
 
@@ -29,3 +27,33 @@ var styles = {
 ```
 
 You can find more in `test` directory.
+
+## Installation
+
+Install plugin:
+```
+npm install --save-dev babel-plugin-jss-autoprefix
+```
+
+Add to your `.babelrc`:
+
+```
+{
+  "stage": 0,
+  "plugins": [
+    "jss-autoprefix"
+  ],
+  "extra": {
+    "jss-autoprefix": {
+      // default: `autoprefix`
+      "target": "customFunctionName",
+      // default: see `autoprefixer.defaults`
+      "browsers": [">1%", "last 2 versions", "ie >= 9"]
+    }
+  }
+}
+```
+
+## License
+
+MIT

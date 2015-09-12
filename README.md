@@ -19,10 +19,7 @@ var styles = {
   WebkitUserSelect: 'none',
   MozUserSelect: 'none',
   msUserSelect: 'none',
-  display: '-webkit-box',
-  display: '-webkit-flex',
-  display: '-ms-flexbox',
-  display: 'flex'
+  display: '-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex'
 };
 ```
 

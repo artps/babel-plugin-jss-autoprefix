@@ -7,7 +7,10 @@ const style = autoprefix({
 const activeStyle = autoprefix({
   ...style,
   ...{
-    background: '#000'
+    ...style,
+    ...{
+      background: '#000'
+    }
   }
 });
 

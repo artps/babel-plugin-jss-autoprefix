@@ -32,21 +32,41 @@ function declToProp(types, { prop, value }) {
 }
 
 function process(processor, types, props) {
-  return props
-    .map((prop) => {
-      if(isProperty(prop)) {
-        return processor.process(propToDecl(prop))
-                        .sync().root.nodes
-                        .map((prop) => declToProp(types, prop));
-      }
+  let result = [];
 
-      if(isSpreadProperty(prop)) {
-        return process(processor, types, prop.argument.properties);
-      }
+  for(let key in props) {
+    let prop = props[key];
 
-      return prop;
-    })
-    .reduce((acc, props) => (acc.concat(props)), []);
+    if(isProperty(prop)) {
+      let prefixed = processor.process(propToDecl(prop))
+        .sync().root.nodes.map((prop) => {
+          return declToProp(types, prop)
+        }).reduce((acc, prop) => {
+          acc[prop.key.name] = acc[prop.key.name]
+                             ? acc[prop.key.name].concat(prop) : [prop];
+          return acc;
+        }, {});
+
+      result = result.concat(...Object.keys(prefixed).reduce((acc, key) => {
+        return acc.concat(declToProp(types, {
+          prop: key,
+          value: prefixed[key].map((prop) => prop.value.value)
+                              .join(`;${prop.key.name}:`)
+        }));
+      }, []));
+
+      continue;
+    }
+
+    if(isSpreadProperty(prop)) {
+      result = result.concat(...process(processor, types, prop.argument.properties));
+      continue;
+    }
+
+    result.push(prop);
+  }
+
+  return result;
 }
 
 

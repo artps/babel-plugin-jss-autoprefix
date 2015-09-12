@@ -9,12 +9,9 @@ var style = {
   MozUserSelect: 'none',
   msUserSelect: 'none',
   userSelect: 'none',
-  display: '-webkit-box',
-  display: '-webkit-flex',
-  display: '-ms-flexbox',
-  display: 'flex'
+  display: '-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex'
 };
-var activeStyle = _extends({}, style, {
+var activeStyle = _extends({}, style, style, {
   background: '#000'
 });
 

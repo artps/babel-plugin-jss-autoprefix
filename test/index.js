@@ -30,7 +30,7 @@ describe('finds and process `autoprefix` call', () => {
     it(`should ${name}`, () => {
       const read = caseReader(name);
 
-      assert.equal(read.actual(), read.expected());
+      assert.equal(read.expected(), read.actual());
     });
   });
 })

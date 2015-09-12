@@ -9,7 +9,10 @@ The Babel plugin as a layer on top of [postcss](https://github.com/postcss/postc
 ```javascript
 const styles = autoprefix({
   userSelect: 'none',
-  display: 'flex'
+  display: 'flex',
+  ':hover': { // in case of Radium
+    display: 'block'
+  }
 });
 ```
 
@@ -21,7 +24,11 @@ var styles = {
   WebkitUserSelect: 'none',
   MozUserSelect: 'none',
   msUserSelect: 'none',
-  display: '-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex'
+  display: '-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex',
+
+  ':hover': {
+    display: 'block'
+  }
 };
 ```
 

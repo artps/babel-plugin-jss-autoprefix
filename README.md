@@ -48,7 +48,7 @@ Add to your `.babelrc`:
       // default: `autoprefix`
       "target": "customFunctionName",
       // default: see `autoprefixer.defaults`
-      "browsers": [">1%", "last 2 versions", "ie >= 9"]
+      "browsers": ["> 1%", "last 2 versions", "ie >= 9"]
     }
   }
 }

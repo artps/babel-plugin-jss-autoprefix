@@ -8,7 +8,11 @@ var style = {
   WebkitUserSelect: 'none',
   MozUserSelect: 'none',
   msUserSelect: 'none',
-  userSelect: 'none'
+  userSelect: 'none',
+  display: '-webkit-box',
+  display: '-webkit-flex',
+  display: '-ms-flexbox',
+  display: 'flex'
 };
 var activeStyle = _extends({}, style, {
   background: '#000'

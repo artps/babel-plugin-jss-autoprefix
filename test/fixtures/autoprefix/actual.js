@@ -1,7 +1,8 @@
 const style = autoprefix({
   fontSize: '14px',
   borderWidth: '1px',
-  userSelect: 'none'
+  userSelect: 'none',
+  display: 'flex'
 });
 const activeStyle = autoprefix({
   ...style,

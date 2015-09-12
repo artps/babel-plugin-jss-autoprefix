@@ -8,7 +8,8 @@ Babel plugin to add vendor prefixes to your jsx inline styles. Uses `autoprefixe
 
 ```javascript
 const styles = autoprefix({
-  userSelect: 'none'
+  userSelect: 'none',
+  display: 'flex'
 });
 ```
 
@@ -19,12 +20,12 @@ var styles = {
   userSelect: 'none',
   WebkitUserSelect: 'none',
   MozUserSelect: 'none',
-  msUserSelect: 'none'
+  msUserSelect: 'none',
+  display: '-webkit-box',
+  display: '-webkit-flex',
+  display: '-ms-flexbox',
+  display: 'flex'
 };
 ```
 
 You can find more in `test` directory.
-
-## TODO
-
-Currently plugin adds prefixes only to, say, "basic keys". It will support values, media-queries, etc.

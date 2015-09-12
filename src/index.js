@@ -9,6 +9,14 @@ function isProperty({ type }) {
   return type === 'Property';
 }
 
+function isLiteral({ value }) {
+  return value.type === 'Literal';
+}
+
+function isObjectExpression({ value }) {
+  return value.type === 'ObjectExpression';
+}
+
 function isSpreadProperty({ type, argument }) {
   return (
     type === 'SpreadProperty' &&
@@ -37,7 +45,15 @@ function process(processor, types, props) {
   for(let key in props) {
     let prop = props[key];
 
-    if(isProperty(prop)) {
+    if(isProperty(prop) && isObjectExpression(prop)) {
+      const nextProp = {...prop};
+      nextProp.value.properties = process(processor, types, nextProp.value.properties);
+      result.push(nextProp);
+
+      continue;
+    }
+
+    if(isProperty(prop) && isLiteral(prop)) {
       let prefixed = processor.process(propToDecl(prop))
         .sync().root.nodes.map((prop) => {
           return declToProp(types, prop)

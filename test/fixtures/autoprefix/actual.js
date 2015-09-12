@@ -2,8 +2,12 @@ const style = autoprefix({
   fontSize: '14px',
   borderWidth: '1px',
   userSelect: 'none',
-  display: 'flex'
+  display: 'flex',
+  ':hover': {
+    display: 'block'
+  }
 });
+
 const activeStyle = autoprefix({
   ...style,
   ...{
